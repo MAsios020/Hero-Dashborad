@@ -1,76 +1,55 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const sqlite3 = require('sqlite3');
-const { open } = require('sqlite');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-let db;
-
-async function setupDatabase() {
-    db = await open({
-        filename: path.join(__dirname, 'orders.db'),
-        driver: sqlite3.Database
-    });
-
-    await db.exec(`
-        CREATE TABLE IF NOT EXISTS orders (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            customerName TEXT NOT NULL,
-            product TEXT NOT NULL,
-            productColor TEXT,
-            phoneNumber TEXT NOT NULL,
-            address TEXT NOT NULL,
-            status TEXT DEFAULT 'قيد الانتظار',
-            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    `);
-}
-
-setupDatabase().then(() => {
-    console.log('Database initialized successfully.');
-}).catch(err => {
-    console.error('Failed to initialize database:', err);
-});
+// In-memory storage for MVP / Testing on Vercel
+// Note: This will reset whenever Vercel's serverless function goes to sleep!
+let orders = [];
 
 // Get all orders
-app.get('/api/orders', async (req, res) => {
-    try {
-        const orders = await db.all('SELECT * FROM orders ORDER BY createdAt DESC');
-        res.json(orders);
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to fetch orders' });
-    }
+app.get('/api/orders', (req, res) => {
+    // Sort by newest first
+    const sortedOrders = [...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    res.json(sortedOrders);
 });
 
 // Add a new order
-app.post('/api/orders', async (req, res) => {
+app.post('/api/orders', (req, res) => {
     const { customerName, product, productColor, phoneNumber, address, status } = req.body;
     
     if (!customerName || !product || !phoneNumber || !address) {
         return res.status(400).json({ error: 'customerName, product, phoneNumber, and address are required' });
     }
 
-    try {
-        const result = await db.run(
-            'INSERT INTO orders (customerName, product, productColor, phoneNumber, address, status) VALUES (?, ?, ?, ?, ?, ?)',
-            [customerName, product, productColor || '', phoneNumber, address, status || 'قيد الانتظار']
-        );
-        
-        const newOrder = await db.get('SELECT * FROM orders WHERE id = ?', result.lastID);
-        res.status(201).json({ message: 'Order created successfully', order: newOrder });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Failed to create order' });
-    }
+    const newOrder = {
+        id: Date.now().toString().slice(-6), // Simple short ID for display
+        customerName,
+        product,
+        productColor: productColor || '',
+        phoneNumber,
+        address,
+        status: status || 'قيد الانتظار',
+        createdAt: new Date().toISOString()
+    };
+
+    orders.push(newOrder);
+    
+    res.status(201).json({ message: 'Order created successfully', order: newOrder });
 });
 
-app.listen(port, () => {
-    console.log(`🚀 Dashboard API Server is running on http://localhost:${port}`);
-});
+// Only start the server if run directly (not via Vercel)
+if (require.main === module) {
+    app.listen(port, () => {
+        console.log(`🚀 Dashboard API Server is running on http://localhost:${port}`);
+    });
+}
+
+// Export the app for Vercel Serverless
+module.exports = app;
