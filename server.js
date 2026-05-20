@@ -18,14 +18,39 @@ app.get('/api/orders', (req, res) => {
     res.json(sortedOrders);
 });
 
-// Add a new order
+// Add or Update order (Upsert)
 app.post('/api/orders', (req, res) => {
-    const { customerName, product, productColor, phoneNumber, address, status } = req.body;
+    const { orderId, customerName, product, productColor, phoneNumber, address, status } = req.body;
     
     if (!customerName || !product || !phoneNumber || !address) {
         return res.status(400).json({ error: 'customerName, product, phoneNumber, and address are required' });
     }
 
+    // Upsert Logic:
+    // Check if there is an active (pending) order for this phone number, or if orderId is provided.
+    let existingIndex = -1;
+    
+    if (orderId) {
+        existingIndex = orders.findIndex(o => o.id === String(orderId));
+    } else {
+        existingIndex = orders.findIndex(o => o.phoneNumber === phoneNumber && o.status === 'قيد الانتظار');
+    }
+
+    if (existingIndex !== -1) {
+        // Update the existing order
+        orders[existingIndex] = {
+            ...orders[existingIndex],
+            customerName,
+            product,
+            productColor: productColor || orders[existingIndex].productColor,
+            address,
+            status: status || orders[existingIndex].status,
+            updatedAt: new Date().toISOString()
+        };
+        return res.status(200).json({ message: 'Order updated successfully', order: orders[existingIndex] });
+    }
+
+    // Create a new order
     const newOrder = {
         id: Date.now().toString().slice(-6), 
         customerName,
