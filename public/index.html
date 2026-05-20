@@ -20,6 +20,8 @@
             --success-light: #d1fae5;
             --warning: #f59e0b;
             --warning-light: #fef3c7;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
             --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
             --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.03);
@@ -39,7 +41,6 @@
             display: flex;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 280px;
             background-color: var(--card-bg);
@@ -58,10 +59,6 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-        }
-
-        .logo i {
-            font-size: 2rem;
         }
 
         .nav-item {
@@ -84,7 +81,6 @@
             transform: translateX(-5px);
         }
 
-        /* Main Content */
         .main-content {
             flex: 1;
             padding: 2.5rem 3rem;
@@ -106,24 +102,6 @@
             letter-spacing: -0.5px;
         }
 
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            background: var(--card-bg);
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .user-profile img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        /* Stats Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -139,14 +117,6 @@
             align-items: center;
             gap: 1.5rem;
             box-shadow: var(--shadow-md);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
         }
 
         .stat-icon {
@@ -159,36 +129,20 @@
             font-size: 1.75rem;
         }
 
-        .stat-icon.primary {
-            background-color: var(--primary-light);
-            color: var(--primary-color);
-        }
+        .stat-icon.primary { background-color: var(--primary-light); color: var(--primary-color); }
+        .stat-icon.success { background-color: var(--success-light); color: var(--success); }
 
-        .stat-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
+        .stat-info { display: flex; flex-direction: column; gap: 0.25rem; }
+        .stat-title { color: var(--text-muted); font-size: 1rem; font-weight: 500; }
+        .stat-value { font-size: 2rem; font-weight: 800; color: var(--text-main); }
 
-        .stat-title {
-            color: var(--text-muted);
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--text-main);
-        }
-
-        /* Table Section */
         .orders-section {
             background-color: var(--card-bg);
             border-radius: 1.25rem;
             box-shadow: var(--shadow-md);
             overflow-x: auto;
             padding: 1.5rem;
+            position: relative;
         }
 
         .orders-header {
@@ -200,27 +154,29 @@
             margin-bottom: 1rem;
         }
 
-        .orders-header h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
         }
 
-        .refresh-btn {
-            background: none;
-            border: none;
-            color: var(--primary-color);
-            font-size: 1rem;
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
             font-weight: 700;
             cursor: pointer;
+            border: none;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            transition: opacity 0.3s;
+            transition: opacity 0.3s, transform 0.1s;
         }
 
-        .refresh-btn:hover {
-            opacity: 0.8;
-        }
+        .btn:active { transform: scale(0.95); }
+
+        .btn-outline { background: none; color: var(--primary-color); border: 1px solid var(--primary-color); }
+        .btn-danger { background-color: var(--danger-light); color: var(--danger); }
+        .btn-primary { background-color: var(--primary-color); color: white; }
 
         table {
             width: 100%;
@@ -230,7 +186,7 @@
         }
 
         th, td {
-            padding: 1.25rem 1rem;
+            padding: 1rem;
             text-align: right;
             vertical-align: middle;
         }
@@ -240,81 +196,113 @@
             font-weight: 500;
             font-size: 0.95rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
             border-bottom: 2px solid var(--border-color);
-            white-space: nowrap;
         }
 
-        td {
-            color: var(--text-main);
-            background-color: #fafbfc;
-            font-weight: 500;
-        }
-        
-        td.address-col {
-            max-width: 200px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        td { background-color: #fafbfc; font-weight: 500; }
+        td:first-child { border-top-right-radius: 0.75rem; border-bottom-right-radius: 0.75rem; }
+        td:last-child { border-top-left-radius: 0.75rem; border-bottom-left-radius: 0.75rem; }
 
-        td:first-child {
-            border-top-right-radius: 0.75rem;
-            border-bottom-right-radius: 0.75rem;
-        }
+        tr:hover td { background-color: var(--primary-light); }
 
-        td:last-child {
-            border-top-left-radius: 0.75rem;
-            border-bottom-left-radius: 0.75rem;
-        }
-
-        tr {
-            transition: transform 0.2s;
-        }
-
-        tr:hover td {
-            background-color: var(--primary-light);
-            transform: scale(1.01);
-        }
-
-        .status-badge {
-            padding: 0.4rem 1rem;
+        .status-select {
+            padding: 0.4rem 2rem 0.4rem 1rem;
             border-radius: 2rem;
             font-size: 0.85rem;
             font-weight: 700;
-            display: inline-block;
-            white-space: nowrap;
+            border: 1px solid transparent;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: left 10px center;
+            background-size: 1em;
         }
 
-        .status-badge.success {
-            background-color: var(--success-light);
-            color: var(--success);
+        .status-select.pending { background-color: var(--warning-light); color: var(--warning); }
+        .status-select.success { background-color: var(--success-light); color: var(--success); }
+        .status-select.canceled { background-color: var(--danger-light); color: var(--danger); }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
         }
-        
-        .status-badge.pending {
-            background-color: var(--warning-light);
-            color: var(--warning);
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 4rem 0;
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
             color: var(--text-muted);
+            transition: color 0.2s;
         }
-        
-        .empty-state i {
-            font-size: 3rem;
+
+        .icon-btn.edit:hover { color: var(--primary-color); }
+        .icon-btn.delete:hover { color: var(--danger); }
+
+        /* Custom Checkbox */
+        input[type="checkbox"] {
+            width: 1.2rem;
+            height: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 400px;
+            max-width: 90%;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
             margin-bottom: 1rem;
-            opacity: 0.5;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            outline: none;
+            font-family: inherit;
         }
         
-        .color-badge {
-            display: inline-block;
-            padding: 0.2rem 0.6rem;
-            border-radius: 4px;
-            background-color: #e2e8f0;
-            font-size: 0.85rem;
-            color: #475569;
+        .form-group input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
         }
     </style>
 </head>
@@ -324,47 +312,25 @@
             <i class="fa-solid fa-bolt"></i>
             هيرو داش
         </div>
-        <a href="#" class="nav-item active">
-            <i class="fa-solid fa-chart-pie"></i>
-            الرئيسية
-        </a>
-        <a href="#" class="nav-item">
-            <i class="fa-solid fa-box"></i>
-            الطلبات
-        </a>
-        <a href="#" class="nav-item">
-            <i class="fa-solid fa-users"></i>
-            العملاء
-        </a>
-        <a href="#" class="nav-item" style="margin-top: auto;">
-            <i class="fa-solid fa-gear"></i>
-            الإعدادات
-        </a>
+        <a href="#" class="nav-item active"><i class="fa-solid fa-chart-pie"></i> الرئيسية</a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-box"></i> الطلبات</a>
     </div>
 
     <div class="main-content">
         <div class="header">
             <h1>لوحة المتابعة</h1>
-            <div class="user-profile">
-                <span style="font-weight: 700; color: var(--text-main);">مرحباً، مدير النظام</span>
-                <img src="https://ui-avatars.com/api/?name=Admin&background=0b5cff&color=fff" alt="Admin">
-            </div>
         </div>
 
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-icon primary">
-                    <i class="fa-solid fa-shopping-bag"></i>
-                </div>
+                <div class="stat-icon primary"><i class="fa-solid fa-shopping-bag"></i></div>
                 <div class="stat-info">
                     <span class="stat-title">إجمالي الطلبات</span>
                     <span class="stat-value" id="total-orders">0</span>
                 </div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon" style="background-color: var(--success-light); color: var(--success);">
-                    <i class="fa-solid fa-check-circle"></i>
-                </div>
+                <div class="stat-icon success"><i class="fa-solid fa-check-circle"></i></div>
                 <div class="stat-info">
                     <span class="stat-title">الطلبات المكتملة</span>
                     <span class="stat-value" id="completed-orders">0</span>
@@ -374,100 +340,226 @@
 
         <div class="orders-section">
             <div class="orders-header">
-                <h2>أحدث الطلبات</h2>
-                <button class="refresh-btn" onclick="fetchOrders()">
-                    <i class="fa-solid fa-rotate-right" id="refresh-icon"></i>
-                    تحديث الآن
-                </button>
+                <h2>إدارة الطلبات</h2>
+                <div class="header-actions">
+                    <button class="btn btn-danger" id="bulk-delete-btn" style="display: none;" onclick="deleteSelected()">
+                        <i class="fa-solid fa-trash"></i> حذف المحدد
+                    </button>
+                    <button class="btn btn-outline" onclick="fetchOrders()">
+                        <i class="fa-solid fa-rotate-right" id="refresh-icon"></i> تحديث
+                    </button>
+                </div>
             </div>
             <table>
                 <thead>
                     <tr>
-                        <th>رقم الطلب</th>
+                        <th style="width: 40px;"><input type="checkbox" id="select-all" onclick="toggleSelectAll()"></th>
+                        <th>الطلب</th>
                         <th>العميل</th>
                         <th>الموبايل</th>
-                        <th>العنوان</th>
                         <th>المنتج</th>
                         <th>اللون</th>
-                        <th>التاريخ</th>
                         <th>الحالة</th>
+                        <th>إجراءات</th>
                     </tr>
                 </thead>
-                <tbody id="orders-table-body">
-                    <!-- Orders will be injected here via JS -->
-                </tbody>
+                <tbody id="orders-table-body"></tbody>
             </table>
         </div>
     </div>
 
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>تعديل الطلب</h2>
+                <button class="icon-btn" onclick="closeModal()"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <input type="hidden" id="edit-id">
+            <div class="form-group">
+                <label>اسم العميل</label>
+                <input type="text" id="edit-name">
+            </div>
+            <div class="form-group">
+                <label>رقم الموبايل</label>
+                <input type="text" id="edit-phone">
+            </div>
+            <div class="form-group">
+                <label>المنتج</label>
+                <input type="text" id="edit-product">
+            </div>
+            <div class="form-group">
+                <label>العنوان</label>
+                <input type="text" id="edit-address">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal()">إلغاء</button>
+                <button class="btn btn-primary" onclick="saveEdit()">حفظ التعديلات</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        let currentOrders = [];
+        let selectedIds = new Set();
+
+        const getStatusClass = (status) => {
+            const s = status.toLowerCase();
+            if(s.includes('مكتمل') || s === 'delivered' || s === 'تم التوصيل') return 'success';
+            if(s.includes('ملغي') || s === 'canceled' || s === 'مرفوض') return 'canceled';
+            return 'pending';
+        };
+
         async function fetchOrders() {
-            const refreshIcon = document.getElementById('refresh-icon');
-            refreshIcon.classList.add('fa-spin');
-            
+            document.getElementById('refresh-icon').classList.add('fa-spin');
             try {
-                const response = await fetch('/api/orders');
-                const orders = await response.json();
-                
-                // Update stats
-                document.getElementById('total-orders').innerText = orders.length;
-                
-                const completedCount = orders.filter(o => o.status.includes('مكتمل') || o.status.toLowerCase() === 'delivered' || o.status === 'تم التوصيل').length;
-                document.getElementById('completed-orders').innerText = completedCount;
-
-                // Update table
-                const tbody = document.getElementById('orders-table-body');
-                if (orders.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="8">
-                                <div class="empty-state">
-                                    <i class="fa-solid fa-inbox"></i>
-                                    <p>لا توجد طلبات حالياً، سيتم عرض الطلبات هنا فور وصولها.</p>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-
-                tbody.innerHTML = orders.map(order => {
-                    const date = new Date(order.createdAt).toLocaleString('ar-EG');
-                    
-                    let statusClass = 'pending';
-                    let displayStatus = order.status;
-                    
-                    if(displayStatus === 'Pending') displayStatus = 'قيد الانتظار';
-                    
-                    if (displayStatus.includes('مكتمل') || displayStatus.toLowerCase() === 'delivered' || displayStatus === 'تم التوصيل') {
-                        statusClass = 'success';
-                    }
-                    
-                    const colorHtml = order.productColor ? `<span class="color-badge">${order.productColor}</span>` : '<span style="color: #94a3b8;">-</span>';
-
-                    return `
-                        <tr>
-                            <td style="color: var(--primary-color); font-weight: 700;">#${order.id}</td>
-                            <td style="font-weight: 700;">${order.customerName}</td>
-                            <td dir="ltr" style="text-align: right;">${order.phoneNumber}</td>
-                            <td class="address-col" title="${order.address}">${order.address}</td>
-                            <td>${order.product}</td>
-                            <td>${colorHtml}</td>
-                            <td style="color: var(--text-muted); font-size: 0.9rem;">${date}</td>
-                            <td><span class="status-badge ${statusClass}">${displayStatus}</span></td>
-                        </tr>
-                    `;
-                }).join('');
-            } catch (error) {
-                console.error('Error fetching orders:', error);
+                const res = await fetch('/api/orders');
+                currentOrders = await res.json();
+                renderTable();
+            } catch (err) {
+                console.error(err);
             } finally {
-                setTimeout(() => {
-                    refreshIcon.classList.remove('fa-spin');
-                }, 500);
+                setTimeout(() => document.getElementById('refresh-icon').classList.remove('fa-spin'), 500);
             }
         }
 
-        // Fetch initially and then every 5 seconds
+        function renderTable() {
+            document.getElementById('total-orders').innerText = currentOrders.length;
+            document.getElementById('completed-orders').innerText = currentOrders.filter(o => getStatusClass(o.status) === 'success').length;
+
+            const tbody = document.getElementById('orders-table-body');
+            
+            if (currentOrders.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 3rem; color:var(--text-muted)">لا توجد طلبات حالياً.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = currentOrders.map(order => {
+                const isSelected = selectedIds.has(order.id);
+                const sClass = getStatusClass(order.status);
+                
+                return `
+                    <tr>
+                        <td><input type="checkbox" class="row-checkbox" value="${order.id}" ${isSelected ? 'checked' : ''} onchange="toggleSelect('${order.id}', this.checked)"></td>
+                        <td style="color:var(--primary-color); font-weight:700;">#${order.id}</td>
+                        <td style="font-weight:700;">${order.customerName}</td>
+                        <td dir="ltr">${order.phoneNumber}</td>
+                        <td>${order.product}</td>
+                        <td>${order.productColor || '-'}</td>
+                        <td>
+                            <select class="status-select ${sClass}" onchange="updateStatus('${order.id}', this.value)">
+                                <option value="قيد الانتظار" ${sClass==='pending'?'selected':''}>قيد الانتظار</option>
+                                <option value="تم التوصيل" ${sClass==='success'?'selected':''}>مكتمل / تم التوصيل</option>
+                                <option value="ملغي" ${sClass==='canceled'?'selected':''}>ملغي</option>
+                            </select>
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="icon-btn edit" onclick="openEditModal('${order.id}')" title="تعديل"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="icon-btn delete" onclick="deleteOrder('${order.id}')" title="حذف"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            
+            updateBulkDeleteBtn();
+        }
+
+        // Selection Logic
+        function toggleSelectAll() {
+            const isChecked = document.getElementById('select-all').checked;
+            selectedIds = isChecked ? new Set(currentOrders.map(o => o.id)) : new Set();
+            renderTable();
+        }
+
+        function toggleSelect(id, isChecked) {
+            if (isChecked) selectedIds.add(id);
+            else selectedIds.delete(id);
+            updateBulkDeleteBtn();
+            
+            document.getElementById('select-all').checked = (selectedIds.size === currentOrders.length && currentOrders.length > 0);
+        }
+
+        function updateBulkDeleteBtn() {
+            const btn = document.getElementById('bulk-delete-btn');
+            btn.style.display = selectedIds.size > 0 ? 'flex' : 'none';
+        }
+
+        // API Actions
+        async function updateStatus(id, newStatus) {
+            try {
+                await fetch('/api/orders/' + id, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                fetchOrders();
+            } catch (err) { console.error(err); }
+        }
+
+        async function deleteOrder(id) {
+            if (!confirm('هل أنت متأكد من حذف هذا الطلب؟')) return;
+            try {
+                await fetch('/api/orders/' + id, { method: 'DELETE' });
+                selectedIds.delete(id);
+                fetchOrders();
+            } catch (err) { console.error(err); }
+        }
+
+        async function deleteSelected() {
+            if (!confirm('هل أنت متأكد من حذف جميع الطلبات المحددة؟')) return;
+            try {
+                await fetch('/api/orders/bulk-delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ids: Array.from(selectedIds) })
+                });
+                selectedIds.clear();
+                document.getElementById('select-all').checked = false;
+                fetchOrders();
+            } catch (err) { console.error(err); }
+        }
+
+        // Edit Modal Logic
+        function openEditModal(id) {
+            const order = currentOrders.find(o => o.id === id);
+            if (!order) return;
+            
+            document.getElementById('edit-id').value = order.id;
+            document.getElementById('edit-name').value = order.customerName;
+            document.getElementById('edit-phone').value = order.phoneNumber;
+            document.getElementById('edit-product').value = order.product;
+            document.getElementById('edit-address').value = order.address;
+            
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        async function saveEdit() {
+            const id = document.getElementById('edit-id').value;
+            const payload = {
+                customerName: document.getElementById('edit-name').value,
+                phoneNumber: document.getElementById('edit-phone').value,
+                product: document.getElementById('edit-product').value,
+                address: document.getElementById('edit-address').value,
+            };
+
+            try {
+                await fetch('/api/orders/' + id, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                closeModal();
+                fetchOrders();
+            } catch (err) { console.error(err); }
+        }
+
+        // Initial Load
         fetchOrders();
         setInterval(fetchOrders, 5000);
     </script>
