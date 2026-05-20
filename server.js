@@ -18,6 +18,14 @@ app.get('/api/orders', (req, res) => {
     res.json(sortedOrders);
 });
 
+// Get orders by phone number (for AI Agent)
+app.get('/api/orders/phone/:phone', (req, res) => {
+    const { phone } = req.params;
+    const customerOrders = orders.filter(o => o.phoneNumber === phone)
+                                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    res.json(customerOrders);
+});
+
 // Add or Update order (Upsert)
 app.post('/api/orders', (req, res) => {
     const { orderId, customerName, product, productColor, phoneNumber, address, status } = req.body;
